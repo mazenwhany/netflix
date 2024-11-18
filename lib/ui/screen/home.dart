@@ -33,7 +33,7 @@ class home extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: 10,
               itemBuilder: (context, index) {
-                return toprated(
+                return popular(
                 );
 
               },
@@ -58,7 +58,7 @@ class home extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: 10,
               itemBuilder: (context, index) {
-                return popular();
+                return toprated();
                 },
             ),
           ),
