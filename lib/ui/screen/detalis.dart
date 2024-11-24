@@ -1,36 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:netflix/data/movie-class.dart';
 
-class detalis extends StatelessWidget {
-  const detalis({super.key});
+
+class Detalis extends StatelessWidget {
+  final Movie movie;
+
+  const Detalis({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
-
         children: [
-          Image.network("https://s3-alpha-sig.figma.com/img/7bb1/9b45/51b7ed5e50b1b5f28c18a87b391af6d1?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CTqt5dEGiJ9Nej~5c8suBwmHcoHcWYdAU0LNxmeofYkMGx~ln2a32rwtDeZPjpaAiHfJ4juPxjNGRlEc~W8P-ATOktwYtv-NuK2ClVKEDcOtbkCUuNtawpjiL6znCJbvTxxaq9jLMEiMZoJIDHvLNC8AhKwnaEwoMPjlCp~2mr28iNXJTM0ycsvKfQAVRT3P3gZ~tfvd3lD99GRuorLAcdpb9OLNmxicCnr1i5Pt2y5Y4TX9yrE0tZsOJHACOG9W65D~pUs-BcTnpeT40g5RRGNquknfYf5fSvGSQpOQndHYT5S647j39QF9cdve9jeRQJAfweNBVqmd3NExb6qbmg__",
-          width: 375,
-            height: 287,
-            fit: BoxFit.fill,
-          ),
-          SizedBox(
+       Image.network(
+              'https://image.tmdb.org/t/p/w780${movie.posterPath}',
+              width: 376,
+              height: 287,
+              fit: BoxFit.fill,
+            ),
+          const SizedBox(
             height: 17,
           ),
           Row(
-            mainAxisAlignment:MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 24),
-                child: Text("Star Wars: The Last Jedi",style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),),
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  movie.title,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
-          )
+          ),
+          const SizedBox(
+            height: 17,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.star,color: Color.fromRGBO(187, 187, 187, 1),
+                ),
+                 SizedBox(
+                   width: 3,
+                 ),
+                 Text(
+                    movie.voteAverage.toString(),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(187, 187, 187, 1),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text("-------------------------------------------------------------------------"),
+          SizedBox(
+            height: 4,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("RealaseDate: ${movie.releaseDate}",style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text("-------------------------------------------------------------------------"),
+          SizedBox(
+            height: 4,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Description",style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Text(movie.overview,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),),
+          ),
         ],
       ),
     );

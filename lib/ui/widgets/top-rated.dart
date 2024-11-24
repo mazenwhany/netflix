@@ -1,30 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/bloc/state.dart';
 
+import '../../bloc/toprated_cubit.dart';
 import '../screen/detalis.dart';
 
-class toprated extends StatelessWidget {
-   toprated({super.key});
+class TopRated extends StatelessWidget {
+  TopRated({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-
-      InkWell(
-        onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>detalis()));
-        },
-        child: Image.network("https://s3-alpha-sig.figma.com/img/7bb1/9b45/51b7ed5e50b1b5f28c18a87b391af6d1?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CTqt5dEGiJ9Nej~5c8suBwmHcoHcWYdAU0LNxmeofYkMGx~ln2a32rwtDeZPjpaAiHfJ4juPxjNGRlEc~W8P-ATOktwYtv-NuK2ClVKEDcOtbkCUuNtawpjiL6znCJbvTxxaq9jLMEiMZoJIDHvLNC8AhKwnaEwoMPjlCp~2mr28iNXJTM0ycsvKfQAVRT3P3gZ~tfvd3lD99GRuorLAcdpb9OLNmxicCnr1i5Pt2y5Y4TX9yrE0tZsOJHACOG9W65D~pUs-BcTnpeT40g5RRGNquknfYf5fSvGSQpOQndHYT5S647j39QF9cdve9jeRQJAfweNBVqmd3NExb6qbmg__",
-        width: 103,
-        height: 161,
-          fit: BoxFit.fill,),
-      ),
-
-      SizedBox(
-              width: 7,
+    return BlocBuilder<TopRatedCubit, MovieState>(
+      builder: (context, state) {
+        if (state is TopRatedLoadingState) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state is TopRatedSuccessState) {
+          final movies = state.movieResponse.results;
+          return SizedBox(
+            height: 161,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: movies.length,
+              itemBuilder: (context, index) {
+                final movie = movies[index];
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Detalis(movie: movie),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 7.0),
+                    child: Image.network(
+                      'https://image.tmdb.org/t/p/w780${movie.posterPath}',
+                      width: 103,
+                      height: 100,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                );
+              },
             ),
-          ],
+          );
+        } else if (state is PopularErrorState) {
+          return Center(
+            child: Text(
+              state.errorMessage,
+              style: const TextStyle(color: Colors.red, fontSize: 16),
+            ),
+          );
+        } else {
+          return const Center(child: Text('Something went wrong'));
+        }
+      },
     );
   }
 }
